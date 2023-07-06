@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  
+    html {
+      font-family:  system-ui, sans-serif, ;
+      font-size: 12px; 
+    }
+  }
+
+  @layer components {
+
+    .btn-primary {
+      @apply py-4 px-4 bg-teal-500 text-white font-semibold rounded-lg shadow-md ;
+    }
+
+    .btn-confirm {
+      @apply py-8 px-8 bg-teal-500 text-white font-semibold rounded-xl shadow-lg ;
+    }
+
+    .grid-btn {
+      @apply bg-white text-stone-800 font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    }
+
+    .btn-large {
+      @apply w-full py-[1.9rem] px-4 bg-white bg-opacity-90 text-teal-800 rounded-lg shadow-lg;
+    }
+  
+    .debug {
+      @apply border-solid border-4 border-red-700;
+    }
+
+    .full-screen {
+      @apply relative w-screen h-screen;
+    }
+
+    
+    
+  
+    .label {
+      @apply uppercase font-thin text-xs mb-2;
+    }
+  
+    .fields {
+      @apply flex flex-col p-[2rem] items-end gap-3;
+    }
+  
+    .label-input-pair {
+      @apply flex gap-4;
+    }
+  
+    .input {
+      @apply border border-2 border-stone-300 rounded rounded-md p-3 ml-3 w-[14rem] shadow-md;
+    }
+  
+    .card {
+      @apply w-11/12 h-auto p-8 text-left text-2xl font-thin border rounded-xl shadow-xl relative;
+    }
+  
+  
+    
+  }

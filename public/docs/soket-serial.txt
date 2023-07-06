@@ -1,0 +1,114 @@
+https://stackoverflow.com/questions/66849121/npm-serial-port-get-the-output-to-react-component
+
+npm serial-port get the output to react component
+Asked 2 years, 2 months ago
+Modified 2 years, 2 months ago
+Viewed 4k times
+1
+
+I am developing a weighing application, which reads Serial port data and displays on the client. I got the NodeJS script for reading the serial port,
+
+my serial.js , this gives me the weight from my weighing machine as a stream
+
+const SerialPort = require("serialport");
+const ReadLine = SerialPort.parsers.Readline;
+
+//Defining the Serial port
+var port  = new SerialPort("COM1", {
+    baudRate:9600,
+});
+
+//the serial port parser
+const parser = new ReadLine();
+port.pipe(parser);
+
+//read data from serial port
+parser.on("data", (line) => console.log(line));
+How can I get the output from this script to my following react component?
+
+<Input
+id="weight"
+element="textarea"
+type="textarea"
+label="Weight"
+onInput={inputHandler}
+/>
+And what steps do I need to take to make it work online? I heard about websockets. Please put me in the right direction.
+
+node.jsreactjsnpmsocket.ioserial-port
+Share
+Improve this question
+Follow
+edited Mar 30, 2021 at 13:42
+asked Mar 29, 2021 at 5:25
+Gimantha23's user avatar
+Gimantha23
+32966 silver badges1717 bronze badges
+Add a comment
+1 Answer
+Sorted by:
+
+Highest score (default)
+3
+
+** This is a simple code and need to complete it **
+
+server side (Nodejs) :
+
+var express = require('express'),
+    app = express(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
+    port = 8888;
+
+//Server start
+server.listen(port, () => console.log('on port' + port))
+
+//user server
+app.use(express.static(__dirname + '/public'));
+
+io.on('connection', onConnection);
+
+var connectedSocket = null;
+function onConnection(socket){
+    connectedSocket = socket;
+}
+
+
+const SerialPort = require('serialport');
+const Readline = SerialPort.parsers.Readline; 
+const usbport = new SerialPort('COM4');  
+const parser = usbport.pipe(new Readline()); 
+parser.on('data', function (data) {
+    io.emit('serialdata', { data: data });
+});
+Client side (React):
+
+import React from "react";
+import io from 'socket.io-client';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.socket = null;
+  }
+
+  componentDidMount() {
+    this.socket = io('http://localhost:8888');
+    //this.socket.open();
+    this.socket.on('serialdata', (data) => {
+      // we get settings data and can do something with it
+      this.setState({
+        settings: data,
+      })
+    });
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
+  }
+
+  render() {
+    ...
+  }
+}

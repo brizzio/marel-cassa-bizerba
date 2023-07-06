@@ -1,0 +1,43 @@
+
+https://dev.to/jankapunkt/make-text-fit-it-s-parent-size-using-javascript-m40
+
+const div = React.useCallback(node => {
+        if (node !== null) {
+          setHeight(Math.trunc(node.getBoundingClientRect().height));
+          setWidth(Math.trunc(node.getBoundingClientRect().width));
+        }
+
+        console.log('display size', `${width} X ${height}`)
+        resizeText({
+            element: codeRef.current,
+            step: 0.5
+          })
+    
+      }, []);
+    
+    const headerHeight = Math.floor(window.innerHeight * 0.05);
+
+    const isOverflown = ({ clientWidth, clientHeight, scrollWidth, scrollHeight }) => (scrollWidth > clientWidth) || (scrollHeight > clientHeight)
+
+    const resizeText = ({ element, elements, minSize = 10, maxSize = 512, step = 1, unit = 'px' }) => {
+    (elements || [element]).forEach(el => {
+        let i = minSize
+        let overflow = false
+
+            const parent = el.parentNode
+
+        while (!overflow && i < maxSize) {
+            el.style.fontSize = `${i}${unit}`
+            overflow = isOverflown(parent)
+
+        if (!overflow) i += step
+        }
+
+        // revert to last state where no overflow happened
+        console.log('text size', `${i - step}${unit}`)
+        textSize.current = Math.floor((i - step)*0.8)
+    })
+    }
+    
+
+    
