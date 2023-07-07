@@ -82,8 +82,8 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
 //${swap?'flex-row-reverse':''}
 
     return (
-      <div className={`flex  ${swap?'flex-row-reverse':''} items-start grow h-full justify-between`}>
-        <div className='grid grid-rows-8 grid-cols-2 grid-flow-row w-8/12 max-h-[32rem] gap-3.5 mb-2 pr-4'>
+      <div className={`flex  ${swap?'flex-row-reverse':''} items-start grow h-full justify-between gap-3`}>
+        <div className='grid grid-rows-8 grid-cols-2 grid-flow-row w-8/12 h-[35rem] gap-3.5 mb-2 pr-4 '>
         
 
         {[...inventory]?.map((item, index) => (
@@ -97,12 +97,12 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
           ))}
               
         </div>
-        <div className='flex flex-col items-end justify-start w-4/12 h-full px-4 gap-4'>
+        <div className='flex flex-col items-end justify-between w-4/12 h-full p-4'>
           <div className={`${row}`}>
             <span className={`${label}`}><i className="fas fa-sack-dollar fa-2x text-stone-600"></i></span>
             <span className={`${field}`}>{currency(sum)}</span>
           </div>
-          <div className=' border border-zinc-300 rounded-lg bg-white h-[6rem] w-full my-1 text-stone-600 text-2xl'>
+          <div className=' border border-zinc-300 rounded-lg bg-white h-[7rem] w-full my-1 text-stone-600 text-2xl'>
               <div className='flex items-center justify-between h-full px-4'>
                 <div className='text-4xl font-thin'>
                   {input}
@@ -218,15 +218,15 @@ const {
   
   //console.log(img.naturalHeight,    img.naturalWidth);
   
-  const subtotal = () => Number(value) * Number(count)
+  const subtotal = () => parseFloat(value * count).toFixed(2)
 
-  const selectedClass= selected?' bg-white ':'bg-stone-300'
+  const selectedClass= selected?' bg-white ':'bg-zinc-200'
 
   return (
   
   <div key={crypto.randomUUID} className="flex items-center justify-start gap-1">
   
-  <div className='h-[3rem] grow bg-white  shadow-md'
+  <div className='h-[3rem] w-[4rem] bg-white  shadow-md'
   style={{ 
     backgroundImage: `url(/euros/${item.img_url})`,
     backgroundRepeat: 'no-repeat',
@@ -235,7 +235,7 @@ const {
   />
   <div>
     <span
-    className='text-2xl'
+    className='text-lg'
     >{item.face.replace('E', '€')}</span>
   </div>
     
@@ -243,13 +243,13 @@ const {
     <div 
     onClick={handleClick} 
     className={`flex h-fit w-[4rem] border border-2 border-stone-800 border-opacity-40 rounded-xl ${selectedClass} items-center justify-center`}>
-      <span className="text-2xl p-1 w-[3rem] h-[3rem]" >{selected?keyboard:count}</span>
+      <span className="text-2xl pt-2 text-center p-1 w-[3rem] h-[3rem]" >{selected?keyboard:count}</span>
     </div>
   </div>
   <div className="flex items-center justify-center  h-[3rem] border rounded-xl px-2 border-stone-700 border-opacity-20 bg-white/80 shadow-lg ">
 
-    <span className="text-2xl p-1 font-semibold">&#8364;</span>
-    <span className="text-2xl p-1 ">{subtotal()}</span>
+    <span className="text-lg p-1 font-semibold">&#8364;</span>
+    <span className="text-lg p-1 ">{subtotal()}</span>
   </div>
 
   

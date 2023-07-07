@@ -14,7 +14,9 @@ const navigate = useNavigate()
 
 const {
   search,
-  addReferencedItem,
+  appendToCart,
+  makeItem,
+
 } = useCart()
 
 const keyboardRef = React.useRef(null);
@@ -171,26 +173,46 @@ const handleAddItemToCart = (index) => {
   setQueryResults([...list]) 
 }
 
-const handleConfirmSelection = () => {
+const handleConfirmSelection = async() => {
   
-
   let items = queryResults?[...queryResults]:[]
    const selected = items.reduce((a,c,i)=>{
     return c.selected?[...a, c]:[...a]
   },[])
 
-  console.log('add items to cart', selected)
-
-  selected.map(async (el)=>{
-    let item = {...el}
-    let q =el.quantity?el.quantity:1
-    delete item.selected
-    item.quantity=1
-    console.log('adding', item, q)
-    await addReferencedItem(item,q)
+  let prepared = await prepareItems(selected)
   
-  })
+  console.log('add items to cart', prepared)
+
+  appendToCart(prepared)
+  
   navigate(-1) 
+}
+
+const prepareItems = async(selection=[]) =>{
+
+  try {
+    let result = []
+    selection.map((el)=>{
+    
+      let item = {...el}
+      let q =el.quantity?el.quantity:1
+      delete item.selected
+      item.quantity=1
+      console.log('adding', item, q)
+      makeItem(item,q).then((res)=>{
+        result.push(...res)
+      })
+      
+    })
+
+    return result
+    
+  } catch (error) {
+    console.log('handleConfirmSelection try error', error)
+  }
+
+
 }
 
 

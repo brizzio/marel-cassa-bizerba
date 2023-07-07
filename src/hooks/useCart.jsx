@@ -50,7 +50,8 @@ const useCart = () => {
 
     const searchCounter = React.useRef(0)
 
-    
+    //const {reset:resetTicket} = useTicket()
+
     const prices= usePrices()
 
     const {
@@ -75,6 +76,11 @@ const useCart = () => {
         let val = e.deleted?0:w
         return a + val
     },0))
+
+
+    const countValidItems = React.useCallback((arr) => arr.reduce((a,e)=>{
+      return a + e.deleted?0:1
+  },0))
     
 
     
@@ -104,25 +110,23 @@ const useCart = () => {
         setCurrentCart({active:false})
       }
 
-    const addReferencedItem = React.useCallback(async (product, quantity) =>{
+    const addReferencedItem = React.useCallback((product, quantity) =>{
 
         if (!currentCart) return;
         let quant = quantity
         let item = {...product}
-
-        try {
-
-          console.log('quant', quant)
           
-          let res = await makeItem(item, quant)
-              
-          console.log('res',res, Array.isArray(res)?res.length:1)
+        console.log('quant', quant)
           
-          let newList =  Array.from(res).length==1
+              makeItem(item, quant)
+              .then((res)=>{
+                 console.log('res',res, Array.isArray(res)?res.length:1)
+                 return Array.from(res).length==1
                   ? [...currentCart.items, res[0]]
                   : [...currentCart.items, ...res]
-             
-          console.log('newList',newList)
+              })
+              .then((newList)=>{
+                  console.log('newList',newList)
                   const updatedCart = {
                       ...currentCart,
                       items: newList,
@@ -132,16 +136,33 @@ const useCart = () => {
                   }
                   console.log('updatedCart',updatedCart)
                   setCurrentCart(updatedCart)
-          
-          return 
-          
-        } catch (error) {
-          console.log('addReferencedItem error', error)
-        }
-          
-        
+              })
          
   })
+
+
+  const appendToCart = React.useCallback((list) =>{
+
+    if (!currentCart) return;
+    let newList = Array.from(list).length==1
+    ? [...currentCart.items, list[0]]
+    : [...currentCart.items, ...list]
+        
+    console.log('newList',newList)
+
+    const updatedCart = {
+        ...currentCart,
+        items: newList,
+        count: newList.length,
+        total: total(newList, 'calculated_price'),
+        weight: sumWeight(newList)
+    }
+    
+    console.log('updatedCart',updatedCart)
+    setCurrentCart(updatedCart)    
+     
+})
+
 
 
 
@@ -221,6 +242,7 @@ const useCart = () => {
             ...currentCart,
             //list: state.list.filter((item) => item.entry_id !== action.id),
             items:onDeleteList,
+            count: countValidItems(onDeleteList),
             total: total(onDeleteList, 'calculated_price'),
             weight: sumWeight(onDeleteList)
         }
@@ -241,6 +263,7 @@ const useCart = () => {
               setCurrentCart({
                 ...currentCart, 
                 items:updatedItems,
+
                 total: total(updatedItems, 'calculated_price'),
                 weight: sumWeight(updatedItems)
               })
@@ -324,8 +347,13 @@ const useCart = () => {
         //update cashier with current cart
         insertCart(c)
         
+
         //clean last current cart object in memory state
         reset()
+
+        //clean ticket and payment data object in memory state
+         localStorage.removeItem('ticket')
+         localStorage.removeItem('cash')
     
       }
 
@@ -507,7 +535,9 @@ const useCart = () => {
         updatePayment,
         updateTicket,
         closeCart,
-        search
+        search,
+        makeItem,
+        appendToCart
     }
    
   

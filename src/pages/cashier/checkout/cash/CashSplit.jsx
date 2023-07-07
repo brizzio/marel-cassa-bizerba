@@ -76,7 +76,7 @@ const CashSplit = () => {
     return (
 
       <div
-      className='relative flex flex-col w-full h-full gap-4 debug'
+      className='relative flex flex-col w-full h-full gap-4'
       >
         <div className='flex w-full h-fit gap-6'>
             <div

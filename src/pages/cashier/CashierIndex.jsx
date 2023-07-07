@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -69,7 +70,9 @@ export const CashierPage = () => {
 
     const {swap, toggleSwap} = useSwap()
     const [idle, setIdle] = React.useState(true)
+    const [totals, setTotals] = React.useState({})
     const [height, setHeight] = React.useState(null);
+
 
     const navigate = useNavigate()
 
@@ -85,7 +88,11 @@ export const CashierPage = () => {
     } = useCart()
 
 
-    const {closeCashier} = useCashier()
+    const {
+
+        closeCashier
+    
+    } = useCashier()
 
     const {
         init
@@ -166,6 +173,13 @@ export const CashierPage = () => {
 
     React.useEffect(()=>{
         if(!currentCart?.active) setIdle(true)
+        let t = {}
+        t.count = currentCart.count?currentCart.count:0
+        t.weight = currentCart.weight?currentCart.weight:0
+        t.total = currentCart.total?currentCart.total:0
+        setTotals({...t})
+
+
     },[currentCart])
     
 
@@ -188,10 +202,10 @@ export const CashierPage = () => {
     return(
         
         <> 
-             <div className="flex items-center justify-between w-full h-[50px] flex-row-reverse">
+             <div className="flex items-center justify-between w-full h-[50px] flex-row-reverse ">
                 {/* HEADER BUTTONS */}
-                <div className="flex h-full items-end justify-start gap-2 w-7/12 p-1">
-                    <button className={`flex items-center justify-center h-full w-full px-10 bg-blue-900 text-teal-800 font-thin rounded-lg shadow-md bg-center`}
+                <div className="flex h-full items-end justify-start gap-2 w-8/12 p-1">
+                    <button className={`flex items-center justify-center h-full w-3/12 px-10 bg-blue-900 text-teal-800 font-thin rounded-lg shadow-md bg-center`}
                     onClick={handleLotteryHeaderButtonClick}
                     style={{ 
                         backgroundImage: `url(/scontrini.jpg)`,
@@ -200,13 +214,13 @@ export const CashierPage = () => {
                         }}
                     />
                     {/* <button className={`${tabBtn}`}>02</button> */}
-                    <button className={`flex items-center justify-center h-full w-fit px-10  text-teal-800 font-thin bg-white rounded-lg shadow-md`}
+                    <button className={`flex items-center justify-center h-full w-3/12 px-10  text-teal-800 font-thin bg-white rounded-lg shadow-md`}
                     onClick={handleSuspendCashierHeaderButtonClick}
                     >
                         <i className="fa-regular fa-2x fa-circle-pause"></i>
                     </button>
                     
-                    <button className={`flex items-center justify-center h-full w-fit px-10  text-teal-800 font-thin bg-white rounded-lg shadow-md bg-center`}
+                    <button className={`flex items-center justify-center h-full w-3/12 px-10  text-teal-800 font-thin bg-white rounded-lg shadow-md bg-center`}
                     onClick={handleRegisterCostumerHeaderButtonClick}
                     style={{ 
                         backgroundImage: `url(/costumers-300x200.webp)`,
@@ -223,7 +237,7 @@ export const CashierPage = () => {
                         className='h-5/6'
                         src="/scont2.png" alt="" />
                     </button> */}
-                    <button className={`flex items-center h-full w-full px-14 bg-white text-teal-800 font-thin rounded-lg  shadow-md `}
+                    <button className={`flex items-center h-full w-3/12 px-14 bg-white text-teal-800 font-thin rounded-lg  shadow-md `}
                     onClick={handleCloseCashier}>CHIUDERE CASSA</button>
 
                 </div>
@@ -234,20 +248,20 @@ export const CashierPage = () => {
 
             </div>
             
-            <div className={`flex grow w-full mt-1 ${swap?'':'flex-row-reverse'}`}>
+            <div className={`flex grow w-full mt-1 ${swap?'':'flex-row-reverse'} gap-2`}>
                 
                 <div ref={div} className="flex flex-col grow w-5/12 gap-2 pr-2">
                     <div className="grid grid-flow-row grid-cols-3 grid-rows-2 gap-2 h-2/6">
                     <button className={`bg-white/90 text-stone-800 font-thin rounded-lg shadow-md py-2`}><i className="fas fa-2x fa-gears text-stone-400"/></button>
-                    <button className={`bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>SCONTO VALORE</button>
-                    <button className={`bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>SCONTO %</button>
-                    <button className={`${currentCart && currentCart.active
-                    ?'bg-green-200 text-teal-600 font-thin rounded-lg border-2 border-teal-600 border-opacity-10 px-2'
-                    :'bg-white/70 text-teal-600 font-thin rounded-lg border-2 border-teal-600 border-opacity-10'}`}
+                    <button className={`px-3 bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>SCONTO VALORE</button>
+                    <button className={`px-3 bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>SCONTO %</button>
+                    <button className={`px-3 ${currentCart && currentCart.active
+                    ?'bg-green-200 text-teal-800 font-normal rounded-lg border-2 border-teal-600 border-opacity-10 px-2'
+                    :'bg-white/90 text-teal-800 font-normal rounded-lg border-2 border-teal-600 border-opacity-10'}`}
                     disabled = {currentCart && currentCart.active}
                     onClick={startNewCart}>{currentCart && currentCart.active?'CARRELLO ATTIVO':'NUOVO CLIENTE'}</button>
-                    <button className={`bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>RIST. SCONTRINI</button>
-                    <button className={`${currentCart && currentCart.active
+                    <button className={`px-3 bg-white/90 text-stone-800 font-thin rounded-lg shadow-md`}>RIST. SCONTRINI</button>
+                    <button className={`px-3 ${currentCart && currentCart.active
                     ?'bg-red-400 opacity-80 text-white font-thin rounded-lg border-2 border-red-600 border-opacity-10'
                     :'bg-white/70 text-teal-600 font-thin rounded-lg border-2 border-teal-600 border-opacity-10'}`}
                     onClick={cancelCurrentCart}>CANCELLA CARRELLO</button>
@@ -293,7 +307,7 @@ export const CashierPage = () => {
                     {!idle || currentCart?.active
                     ?<>
                     <div className={`w-full h-1/6 row-span-2 col-span-3 flex items-start text-zync-800 gap-3`}>
-                        <DisplayTotals cart={currentCart}/>
+                        <DisplayTotals data={totals} />
                     </div>
                        
                     <div className="h-4/6 w-full rounded-lg bg-white bg-opacity-70 overflow-y-auto [&::-webkit-scrollbar]:hidden max-h-[20.5rem] mb-2">
@@ -332,12 +346,9 @@ export const CashierPage = () => {
     };
 
 
-    const DisplayTotals = ({cart}) => {
-
+    const DisplayTotals = ({data}) => {
         
-        const itemsCount = cart.count?cart.count:0
-        const cartWeight = cart.weight?cart.weight:0
-        const cartTotal = cart.total?cart.total:0
+        
 
 
         return(
@@ -346,18 +357,18 @@ export const CashierPage = () => {
 
                 <div className="flex h-full w-fit  items-center justify-center rounded-xl bg-white shadow-xl">
                     <i className="fas fa-lg fa-cart-arrow-down pl-1 "></i>
-                    <span className="text-3xl font-thin px-2 mb-2">{itemsCount}</span>
+                    <span className="text-3xl font-thin px-2 mb-2">{data?.count}</span>
                 </div>
 
                 <div className="flex h-full px-2  rounded-xl bg-white shadow-xl w-fit  items-center justify-center">
                     <i className="fas fa-weight-scale fa-lg pl-1"></i>
-                    <span className="text-2xl font-thin px-1 mb-1">{cartWeight.toFixed(2)}</span>
+                    <span className="text-2xl font-thin px-1 mb-1">{data?.weight?.toFixed(2)}</span>
                     <span className='text-sm'>Kg</span>
                 </div>
 
                 <div className="flex h-full border rounded-xl bg-teal-700 shadow-xl w-[9rem] items-center justify-start px-3 text-white mt-1 gap-2">
                 <span className="text-2xl font-bold pl-1 mb-2">€</span>
-                <span className="text-2xl font-thin mb-2 text-end  w-full">{cartTotal.toFixed(2)}</span>
+                <span className="text-2xl font-thin mb-2 text-end  w-full">{data?.total?.toFixed(2)}</span>
                 </div>
                 
             </div>
@@ -388,13 +399,35 @@ export const CashierPage = () => {
    const CloseCashier = () => {
 
     const navigate = useNavigate()
+    const {
+        cashier,
+        closeCashier
+    } = useCashier()
+
+    React.useEffect(()=>{
+        if(cashier.is_active) {
+            console.log('closing cashier', cashier)
+            closeCashier()
+        }
+    },[])
 
     return(
-        <div>
-            close cashier routine
+        <div
+        className='flex flex-col justify-center items-center w-full py-8 grow gap-8 debug '
+        >
+            <span
+            className='text-3xl text-teal-700'
+            >  
+             Il cassa é stato chiuso con successo...
+            </span>
             <button
-            onClick={()=>navigate(-1)}
-            >back</button>
+            className='btn-primary w-7/12 py-8 text-3xl'
+            onClick={()=>{
+                //remove user data
+                localStorage.removeItem('user')
+                navigate("/")
+            }}
+            >ESCI</button>
         </div>
     )
    

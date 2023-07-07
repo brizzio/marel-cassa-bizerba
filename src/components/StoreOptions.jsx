@@ -21,15 +21,17 @@ const StoreOptions = ({stores, selectStore}) => {
             return (
              
                 <div key={index}
-                  className={`${stor.selected ? 'debug' : ''}`}
+                  className={` flex flex-col items-center bg-white gap-1 p-3 border  rounded-xl shadow-xl ${stor.selected ? 'border-teal-700 border-3' : 'border-zinc-300'}`}
                   onClick={() => handleClick(index)}
                 >
                   
                 <img  
                 src={stor.banner_detail.logo_url} 
-                className={`h-[80px]`}
+                className={`flex w-fit items-center text-center h-[50px]`}
                 />
-                <div>
+                <div 
+                className='flex w-5/6 items-center text-center grow justify-center text-teal-600 font-semibold'
+                >
                     {stor.store_name}
                 </div>
                 

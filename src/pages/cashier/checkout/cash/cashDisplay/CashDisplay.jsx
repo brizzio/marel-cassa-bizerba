@@ -108,12 +108,15 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
 
 //${swap?'flex-row-reverse':''}
 
+let due = cash?.due?parseFloat(cash.due):0
+let cashedIn = cash?.total?parseFloat(cash.total):0
+let change = cash?.change?parseFloat(cash.change):0
+
     return (
 
       <div
       className='flex flex-col w-full h-full gap-4'
       >
-        cash split
         <div className='flex w-full h-fit gap-6'>
             <div
             className={`flex items-center  gap-2`}
@@ -133,9 +136,9 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
                         €
                     </span>
                     <span 
-                    className="text-3xl font-semibold  text-end w-full"
+                    className="text-3xl font-semibold  text-end w-full pr-2"
                     >
-                        {cash?.due}
+                        {due.toFixed(2)}
                     </span>
                 </div>
               </div>
@@ -157,9 +160,9 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
                               €
                           </span>
                           <span 
-                          className="text-3xl font-thin  text-end w-full"
+                          className="text-3xl font-thin  text-end w-full pr-2"
                           >
-                              {cash?.total?cash?.total:'0.00'}
+                              {cashedIn.toFixed(2)}
                           </span>
                       </div>
                   </div>
@@ -182,9 +185,9 @@ const field =`text-2xl font-thin border border-teal-300 border-2 border-opacity-
                                 €
                             </span>
                             <span 
-                            className="text-3xl font-thin  text-end w-full"
+                            className="text-3xl font-thin  text-end w-full pr-2"
                             >
-                                {cash?.change}
+                                {change.toFixed(2)}
                             </span>
                         </div>
 

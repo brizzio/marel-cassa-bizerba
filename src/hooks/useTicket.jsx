@@ -25,7 +25,7 @@ const {
 
 const {resetPayment} = useCheckout()
 
-const generate = async()=>{
+const generate = React.useCallback(()=>{
     
     try {
 
@@ -87,10 +87,10 @@ const generate = async()=>{
     }
 
     ticket.items = [...items].map((el)=>{
-    
+        console.log('ticket.item', el)
         return {
             upc:el.upc,
-            product:el.product_name,
+            product:el.product_name.substring(0,15) + '...',
             order:el.order,
             weight:numericWeight(el.weight),
             weight_unit:'g',
@@ -103,7 +103,7 @@ const generate = async()=>{
     })
 
     ticket.amount={
-        data:cart.total.toFixed(2),
+        data:parseFloat(cart.total).toFixed(2),
         title:'totale'
     }
 
@@ -123,7 +123,7 @@ const generate = async()=>{
 
         if(el.type_id == 1){
             //element is payment mode debit/credit card aka bancomat
-
+            let amount = parseFloat(el.raw.amount)
             obj = {
                 ...el.raw,
                 type:'debito',
@@ -131,7 +131,7 @@ const generate = async()=>{
                 id:el.id,
                 success:el.success,
                 left:`${el.id} - ${el.raw.operator} ${el.raw.bank} `,
-                right:`Imp.: € ${Number(el.raw.amount).toFixed(2)}`
+                right:`Imp.: € ${amount.toFixed(2)}`
             }
 
            
@@ -139,15 +139,15 @@ const generate = async()=>{
 
         if(el.type_id == 2){
             //element is payment mode cash aka contanti
-
+            let amount = parseFloat(el.value)
             obj = {
-                amount:el.value,
+                amount,
                 type:'contanti',
                 mode:el.type_name,
                 id:el.id,
                 success:true,
                 left:`${el.id} - ${el.type_name} `,
-                right:`Imp.: € ${Number(el.value).toFixed(2)} `
+                right:`Imp.: € ${amount.toFixed(2)} `
 
             }
         }
@@ -155,7 +155,7 @@ const generate = async()=>{
         return obj
     })
 
-    ticket.invoice = await invoice(ticket)
+    ticket.invoice = invoice(ticket)
 
     
     setTicket(ticket)
@@ -171,7 +171,7 @@ const generate = async()=>{
     }
    
 
-}
+},[currentCart])
 
 
 /* raw ={
@@ -278,7 +278,7 @@ const generate = async()=>{
 
 
 //reduces ticket object to lines of text
-const invoice = React.useCallback(async (tkt) =>{
+const invoice = React.useCallback((tkt) =>{
 
     const lines = []
     const line = ''
@@ -388,8 +388,9 @@ const invoice = React.useCallback(async (tkt) =>{
 
 export default useTicket
 
-const numericWeight = (w)=>{
+const numericWeight = (weight)=>{
     //console.log('numericWeight', w)
+    let w = weight?weight:''
     return w.toString().indexOf(',')>0
     ?w.replace(',','.')*1000
     :w * 1000

@@ -75,7 +75,7 @@ const displayTicket = ()=>{
 
   return(
       <div
-      className='flex flex-col overflow-y-auto w-full border rounded-xl shadow-lg h-5/6 leading-4 gap-2 bg-white p-3'
+      className='flex flex-col overflow-y-auto w-full border rounded-xl shadow-lg h-5/6 max-h-[30rem] leading-4 gap-2 bg-white p-3 mt-12'
       >
           <div className={title}>
               <span>{t.tenant.data}</span>
@@ -179,7 +179,7 @@ const displayTicket = ()=>{
   >
     <PrinterSetup/>
     
-    <div className='flex flex-col h-full w-3/6 ml-[4rem] justify-center'>
+    <div className='flex flex-col h-full w-3/6 ml-[4rem] justify-start'>
 
       {/* {ticket?.invoice
       ?[...ticket.invoice].map((el,i)=>{

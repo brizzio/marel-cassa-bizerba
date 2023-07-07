@@ -41,7 +41,7 @@ const Main = () => {
                     
                     return(
                         <div key={i}
-                        className='flex w-full gap-4 text-2xl items-center bg-stone-200 rounded-xl shadow-xl py-4 px-2 text-teal-700'
+                        className='flex w-full gap-4 text-2xl items-center bg-white rounded-xl shadow-lg py-4 px-2 text-teal-700 border border-zinc-300'
                         >
                             <span>{i+1}</span>
                             <span>{el.id}</span>
