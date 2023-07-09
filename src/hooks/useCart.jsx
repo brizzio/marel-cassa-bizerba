@@ -280,7 +280,7 @@ const useCart = () => {
 
     const countItemById = React.useCallback((id)=>{
 
-      const updatedItems = currentCart.items?[...currentCart.items]:[]
+      const updatedItems = currentCart && currentCart.items?[...currentCart.items]:[]
       let list = []
       let count = 0 
       if (updatedItems.length){

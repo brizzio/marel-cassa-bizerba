@@ -173,11 +173,7 @@ export const CashierPage = () => {
 
     React.useEffect(()=>{
         if(!currentCart?.active) setIdle(true)
-        let t = {}
-        t.count = currentCart.count?currentCart.count:0
-        t.weight = currentCart.weight?currentCart.weight:0
-        t.total = currentCart.total?currentCart.total:0
-        setTotals({...t})
+        
 
 
     },[currentCart])
@@ -307,7 +303,7 @@ export const CashierPage = () => {
                     {!idle || currentCart?.active
                     ?<>
                     <div className={`w-full h-1/6 row-span-2 col-span-3 flex items-start text-zync-800 gap-3`}>
-                        <DisplayTotals data={totals} />
+                        <DisplayTotals cart={currentCart?currentCart:{}} />
                     </div>
                        
                     <div className="h-4/6 w-full rounded-lg bg-white bg-opacity-70 overflow-y-auto [&::-webkit-scrollbar]:hidden max-h-[20.5rem] mb-2">
@@ -346,29 +342,31 @@ export const CashierPage = () => {
     };
 
 
-    const DisplayTotals = ({data}) => {
+    const DisplayTotals = ({cart}) => {
         
+        let items = cart && cart.items?[...cart.items]:[]
+        let count = [...items].filter(el=> !el.deleted).length
+        let weight = cart && cart.weight?cart.weight:0
+        let total = cart && cart.total?cart.total:0
         
-
-
         return(
 
             <div className="flex h-[4.5rem] w-full items-center justify-between gap-2 ">
 
                 <div className="flex h-full w-fit  items-center justify-center rounded-xl bg-white shadow-xl">
                     <i className="fas fa-lg fa-cart-arrow-down pl-1 "></i>
-                    <span className="text-3xl font-thin px-2 mb-2">{data?.count}</span>
+                    <span className="text-3xl font-thin px-2 mb-2">{count}</span>
                 </div>
 
                 <div className="flex h-full px-2  rounded-xl bg-white shadow-xl w-fit  items-center justify-center">
                     <i className="fas fa-weight-scale fa-lg pl-1"></i>
-                    <span className="text-2xl font-thin px-1 mb-1">{data?.weight?.toFixed(2)}</span>
+                    <span className="text-2xl font-thin px-1 mb-1">{weight?.toFixed(2)}</span>
                     <span className='text-sm'>Kg</span>
                 </div>
 
                 <div className="flex h-full border rounded-xl bg-teal-700 shadow-xl w-[9rem] items-center justify-start px-3 text-white mt-1 gap-2">
                 <span className="text-2xl font-bold pl-1 mb-2">€</span>
-                <span className="text-2xl font-thin mb-2 text-end  w-full">{data?.total?.toFixed(2)}</span>
+                <span className="text-2xl font-thin mb-2 text-end  w-full">{total?.toFixed(2)}</span>
                 </div>
                 
             </div>

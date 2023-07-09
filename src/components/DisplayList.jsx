@@ -9,10 +9,6 @@ import useCart from '../hooks/useCart';
 //import usePersistentContext from '../../hooks/usePersistentContext';
 
 
-
-
-
-
 const RenderListItem = ({item, index}) => {
     //console.log('list item: ', item)
 
